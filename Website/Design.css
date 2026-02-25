@@ -1,0 +1,21 @@
+body {
+    background-color: #1a1a1a;
+    color: #00ff99;
+    font-family: 'Courier New', monospace;
+    display: flex;
+    justify-content: center;
+    padding-top: 200px;
+}
+
+#data-card {
+    border: 2px solid #00ff99;
+    padding: 20px;
+    border-radius: 20px;
+    background: #252525;
+    box-shadow: 0 0 15px rgba(0, 255, 153, 0.3);
+}
+.status-indicator {
+    margin-top: 20px;
+    font-size: 1.2em;
+    color: #00ff99;
+}
