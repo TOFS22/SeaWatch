@@ -1,6 +1,6 @@
 exports.handler = async function(event, context) {
   // 1. YOUR SETTINGS - DOUBLE CHECK THESE!
-  const APP_ID = 'sender'; // From TTN Overview
+  const APP_ID = 'seawatch'; // From TTN Overview
   const REGION = 'eu1';             // Usually eu1
   const API_KEY = process.env.TTN_API_KEY; // Your NNSXS... key
 
