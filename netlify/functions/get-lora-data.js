@@ -1,5 +1,3 @@
-const fetch = require('node-fetch');
-
 exports.handler = async function(event, context) {
   // 1. YOUR SETTINGS - DOUBLE CHECK THESE!
   const APP_ID = 'sender'; // From TTN Overview
