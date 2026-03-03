@@ -1,6 +1,6 @@
 // GitHub Pages Version - No Netlify needed!
-const APP_ID = 'your-app-id-here'; // From TTN Overview
-const API_KEY = 'NNSXS.YOUR_KEY_HERE'; // Your full TTN API Key
+const APP_ID = 'seawatch'; // From TTN Overview
+const API_KEY = 'NNSXS.CXMVOLSRYKVVSZYF6JIYNIBXN6AVCPDJM72RGJA.QZQYP6O7NT7XWKVYAQ6L7HNTYLNC7M53DFPBWWW2WKLKZFU7R25A'; // Your full TTN API Key
 const REGION = 'eu1'; // e.g., eu1, nam1, etc.
 
 async function fetchLoRaData() {
