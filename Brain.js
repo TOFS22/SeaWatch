@@ -1,18 +1,39 @@
-console.log("Brain.js is loading correctly!");
+// GitHub Pages Version - No Netlify needed!
+const APP_ID = 'your-app-id-here'; // From TTN Overview
+const API_KEY = 'NNSXS.YOUR_KEY_HERE'; // Your full TTN API Key
+const REGION = 'eu1'; // e.g., eu1, nam1, etc.
 
-async function start() {
-    console.log("Attempting to fetch data...");
-    const res = await fetch('/.netlify/functions/get-lora-data');
-    const json = await res.json();
-    console.log("Data received:", json);
+async function fetchLoRaData() {
+    console.log("Fetching directly from TTN...");
+    
+    const url = `https://${REGION}.cloud.thethings.network/api/v3/as/applications/${APP_ID}/packages/storage/uplink_message`;
+
+    try {
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${API_KEY}`,
+                'Accept': 'text/event-stream'
+            }
+        });
+
+        if (!response.ok) throw new Error(`TTN Error: ${response.status}`);
+
+        const text = await response.text();
+        
+        if (text) {
+            const lines = text.trim().split('\n');
+            const lastLine = JSON.parse(lines[lines.length - 1]);
+            const count = lastLine.result.uplink_message.decoded_payload.value;
+            
+            document.getElementById('data').innerText = count;
+            console.log("Success! New count:", count);
+        }
+    } catch (error) {
+        console.error("Direct Fetch Error:", error);
+        // If you see a 'CORS' error here, see step 2 below.
+    }
 }
 
-if (result.messages && result.messages.length > 5) { // Check if we actually have text
-    const lines = result.messages.trim().split('\n');
-    const lastLine = JSON.parse(lines[lines.length - 1]);
-    console.log("Found newest data:", lastLine);
-} else {
-    console.log("TTN has no saved messages yet. Send data from the Arduino!");
-}
-
-start();
+setInterval(fetchLoRaData, 10000);
+fetchLoRaData();
