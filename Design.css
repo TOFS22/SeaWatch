@@ -1,6 +1,6 @@
 body {
-    background-color: #1a1a1a;
-    color: #00ff99;
+    background-image: url("workspaces/SeaWatch/pictures/logo for box png.png");
+    color: #0051ff;
     font-family: 'Courier New', monospace;
     display: flex;
     justify-content: center;
@@ -8,11 +8,11 @@ body {
 }
 
 #data-card {
-    border: 2px solid #00ff99;
+    border: 2px solid #007cf0;
     padding: 20px;
     border-radius: 20px;
     background: #252525;
-    box-shadow: 0 0 15px rgba(0, 255, 153, 0.3);
+    box-shadow: 0 0 15px rgba(11, 202, 228, 0.479);
 }
 .status-indicator {
     margin-top: 20px;
