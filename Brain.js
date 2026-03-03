@@ -22,19 +22,28 @@ async function fetchLoRaData() {
         const text = await response.text();
         
         if (text) {
-        const lines = text.trim().split('\n');
-        const lastLine = JSON.parse(lines[lines.length - 1]);
+    const lines = text.trim().split('\n');
+    const lastLine = JSON.parse(lines[lines.length - 1]);
     
-        // This looks into the TTN 'storage' structure
-        const payload = lastLine.result.uplink_message.decoded_payload;
-        console.log("Full Decoded Payload:", payload); // Look at this in your Console!
+    // 1. Get the data from TTN
+    const result = lastLine.result;
+    const payload = result.uplink_message.decoded_payload;
+    const count = payload.value || payload.count || "0";
+    const device = result.end_device_ids.device_id;
+    const time = new Date(result.received_at).toLocaleTimeString();
 
-        // Try to find the number, whatever it's named
-        const count = payload.value || payload.count || payload.data || "No Value Found";
+    // 2. Update the HTML using YOUR specific IDs
+    document.getElementById('payload').innerText = count;      // Matches <b id="payload">
+    document.getElementById('device-id').innerText = device;  // Matches <span id="device-id">
+    document.getElementById('timestamp').innerText = time;    // Matches <span id="timestamp">
     
-        document.getElementById('data').innerText = count;
-        console.log("Success! New count:", count);
-        }
+    // 3. Update the status indicator
+    const statusLabel = document.getElementById('status');
+    statusLabel.innerText = "Connected";
+    statusLabel.style.color = "green";
+
+    console.log("Dashboard Updated! Count is:", count);
+}
     } catch (error) {
         console.error("Direct Fetch Error:", error);
         // If you see a 'CORS' error here, see step 2 below.
