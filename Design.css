@@ -1,5 +1,5 @@
 body {
-    background-image: url("workspaces/SeaWatch/pictures/logo for box png.png");
+    background-image: url("pictures/logo for box png.png");
     color: #0051ff;
     font-family: 'Courier New', monospace;
     display: flex;
@@ -17,5 +17,5 @@ body {
 .status-indicator {
     margin-top: 20px;
     font-size: 1.2em;
-    color: #00ff99;
+    color: #06dce4;
 }

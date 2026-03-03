@@ -40,7 +40,7 @@ async function fetchLoRaData() {
     // 3. Update the status indicator
     const statusLabel = document.getElementById('status');
     statusLabel.innerText = "Connected";
-    statusLabel.style.color = "green";
+    statusLabel.style.color = "Blue";
 
     console.log("Dashboard Updated! Count is:", count);
 }
