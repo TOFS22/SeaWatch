@@ -22,12 +22,18 @@ async function fetchLoRaData() {
         const text = await response.text();
         
         if (text) {
-            const lines = text.trim().split('\n');
-            const lastLine = JSON.parse(lines[lines.length - 1]);
-            const count = lastLine.result.uplink_message.decoded_payload.value;
-            
-            document.getElementById('data').innerText = count;
-            console.log("Success! New count:", count);
+        const lines = text.trim().split('\n');
+        const lastLine = JSON.parse(lines[lines.length - 1]);
+    
+        // This looks into the TTN 'storage' structure
+        const payload = lastLine.result.uplink_message.decoded_payload;
+        console.log("Full Decoded Payload:", payload); // Look at this in your Console!
+
+        // Try to find the number, whatever it's named
+        const count = payload.value || payload.count || payload.data || "No Value Found";
+    
+        document.getElementById('data').innerText = count;
+        console.log("Success! New count:", count);
         }
     } catch (error) {
         console.error("Direct Fetch Error:", error);
