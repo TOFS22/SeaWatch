@@ -52,3 +52,8 @@ async function fetchLoRaData() {
 
 setInterval(fetchLoRaData, 10000);
 fetchLoRaData();
+
+setInterval(function() {
+    console.log("10 seconds passed. Refreshing data...");
+    fetchLoRaData();
+}, 10000);
