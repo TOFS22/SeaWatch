@@ -1,5 +1,7 @@
 body {
     background-image: url("pictures/logo for box png.png");
+    background-repeat: no-repeat;
+    background-size: cover;
     color: #0051ff;
     font-family: 'Courier New', monospace;
     display: flex;
@@ -17,5 +19,5 @@ body {
 .status-indicator {
     margin-top: 20px;
     font-size: 1.2em;
-    color: #06dce4;
+    color: #1506e4;
 }
