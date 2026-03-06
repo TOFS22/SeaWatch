@@ -8,35 +8,15 @@
   <body>
     <div class="container">
       <h1>SeaWatch Dashboard</h1>
-    <div class="log-search-section">
-      <input type="date" id="search-date">
-      <button onclick="searchLogs()">Search Logs</button>
-    </div>
-
-    <div id="log-results" style="margin-top: 20px; display: none;">
-      <h3>Results for <span id="selected-date-display">--</span></h3>
-      <table border="1" style="width:100%; text-align: left;">
-        <thead>
-            <tr>
-                <th>Time</th>
-                <th>Device</th>
-                <th>Count (Kraakebolle)</th>
-            </tr>
-        </thead>
-        <tbody id="log-table-body">
-            </tbody>
-      </table>
-    </div>
+    
       <div id="data-card">
-        <p>Device ID: <span id="device-id">Loading...</span></p>
-        <p>Count: <b id="payload">--</b></p>
-        <p>Last Updated: <span id="timestamp">--</span></p>
-      </div>
-      <br />
-      <div id="data"></div>
-      <div id="time"></div>
-      <div class="status-indicator">
-        Live Connection: <span id="status">Disconnected</span>
+    <p>Device ID: <span id="device-id">Loading...</span></p>
+    <p>Count: <b id="payload">--</b></p>
+    <p>Last Updated: <span id="timestamp">--</span></p>
+</div>
+<div class="status-indicator">
+    Live Connection: <span id="status">Disconnected</span>
+</div>
       </div>
     </div>
     <script src="Brain.js"></script>
