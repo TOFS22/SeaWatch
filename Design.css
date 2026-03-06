@@ -1,68 +1,100 @@
-/* Base Styles - Clean and Modern */
+/* 1. RESTORE COLORS & FONTS */
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-image: url('/pictures/logo for box png.png');
+    font-family: 'Inter', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background: #0b1120 url('pictures/logo for box png.png') no-repeat center center fixed;
     background-size: cover;
-    color: white;
     margin: 0;
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
+    color: white;
 }
 
 .dashboard-container {
     width: 90%;
-    max-width: 800px;
-    background: #1e293b;
+    max-width: 600px;
+    background: rgba(30, 41, 59, 0.9); /* Deep Slate with transparency */
     padding: 30px;
-    border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    border-radius: 24px;
+    backdrop-filter: blur(12px); /* Glassmorphism effect */
+    box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     text-align: center;
-    border: 1px solid #334155;
 }
 
-/* The Data Grid - This is where the magic happens */
+h2 {
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-size: 1.5rem;
+    margin-bottom: 5px;
+}
+
+#status {
+    font-size: 0.7rem;
+    letter-spacing: 1px;
+    color: #94a3b8;
+    margin-bottom: 20px;
+}
+
+/* 2. THE GRID: Vertical (Desktop) by default */
 .data-grid {
     display: flex;
-    flex-direction: row; /* Side-by-side on desktop */
-    justify-content: space-around;
+    flex-direction: column; 
     gap: 20px;
-    margin: 30px 0;
 }
 
 .card {
-    background: #0f172a;
-    padding: 20px;
-    border-radius: 15px;
-    flex: 1;
-}
-
-#payload {
-    font-size: 4rem; /* Huge number for the count */
-    color: #38bdf8; /* Bright Sea Blue */
-    display: block;
+    background: #0f172a; /* Darker card color */
+    padding: 25px;
+    border-radius: 18px;
+    border: 1px solid rgba(56, 189, 248, 0.2); /* Subtle blue glow */
 }
 
 .label {
-    text-transform: uppercase;
-    font-size: 0.8rem;
     color: #94a3b8;
-    letter-spacing: 1px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    margin-bottom: 10px;
 }
 
-/* --- MOBILE RESPONSIVENESS --- */
+/* Restore that Bright Blue Number */
+#payload {
+    font-size: 5rem;
+    font-weight: 800;
+    color: #38bdf8; 
+    text-shadow: 0 0 20px rgba(56, 189, 248, 0.4);
+    line-height: 1;
+}
+
+#timestamp, #device-id {
+    display: block;
+    color: #f1f5f9;
+    font-family: monospace;
+    font-size: 1.1rem;
+}
+
+/* 3. MOBILE: Horizontal Row */
 @media (max-width: 600px) {
     .data-grid {
-        flex-direction: column; /* Stacks cards vertically on phone */
+        flex-direction: row; /* Side-by-side on phone */
+    }
+
+    .card {
+        flex: 1;
+        padding: 15px 5px;
     }
 
     #payload {
-        font-size: 3rem; /* Slightly smaller text for phones */
+        font-size: 2.5rem; /* Scale down for the row */
+    }
+    
+    .label {
+        font-size: 0.6rem;
     }
 
-    .dashboard-container {
-        padding: 15px;
-        width: 95%;
+    #timestamp {
+        font-size: 0.9rem;
     }
 }
