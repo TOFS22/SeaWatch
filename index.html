@@ -2,21 +2,22 @@
 <html lang="no">
   <head>
     <meta charset="UTF-8" />
-    <title>SeaWatch</title>
+    <title>LoRa Live Dashboard</title>
     <link rel="stylesheet" href="Design.css" />
   </head>
   <body>
     <div class="container">
-      <h1>SeaWatch Dashboard</h1>
-    
+      <h1>LoRa Node Status</h1>
       <div id="data-card">
-    <p>Device ID: <span id="device-id">Loading...</span></p>
-    <p>Count: <b id="payload">--</b></p>
-    <p>Last Updated: <span id="timestamp">--</span></p>
-</div>
-<div class="status-indicator">
-    Live Connection: <span id="status">Disconnected</span>
-</div>
+        <p>Device ID: <span id="device-id">Loading...</span></p>
+        <p>Count: <b id="payload">--</b></p>
+        <p>Last Updated: <span id="timestamp">--</span></p>
+      </div>
+      <br />
+      <div id="data"></div>
+      <div id="time"></div>
+      <div class="status-indicator">
+        Live Connection: <span id="status">Disconnected</span>
       </div>
     </div>
     <script src="Brain.js"></script>
