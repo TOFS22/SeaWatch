@@ -3,16 +3,13 @@ const APP_ID = 'seawatch'; // From TTN Overview
 const API_KEY = 'NNSXS.CXMVOLSRYKVVSZYF6JIYNIBXN6AVCPDJM72RGJA.QZQYP6O7NT7XWKVYAQ6L7HNTYLNC7M53DFPBWWW2WKLKZFU7R25A'; // Your full TTN API Key
 const REGION = 'eu1'; // e.g., eu1, nam1, etc.
 
-// We use the full URL for GitHub Pages
-const URL = `https://${REGION}.cloud.thethings.network/api/v3/as/applications/${APP_ID}/packages/storage/uplink_message`;
+async function fetchLoRaData() {
+    console.log("Fetching directly from TTN...");
+    
+    const url = `https://${REGION}.cloud.thethings.network/api/v3/as/applications/${APP_ID}/packages/storage/uplink_message`;
 
-console.log("SeaWatch: Dashboard starting...");
-
-async function fetchLiveDashboard() {
     try {
-        console.log("SeaWatch: Fetching data from TTN...");
-        
-        const response = await fetch(URL, {
+        const response = await fetch(url, {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${API_KEY}`,
@@ -20,52 +17,43 @@ async function fetchLiveDashboard() {
             }
         });
 
-        if (!response.ok) {
-            console.error("SeaWatch: Connection failed. Status:", response.status);
-            return;
-        }
+        if (!response.ok) throw new Error(`TTN Error: ${response.status}`);
 
         const text = await response.text();
-        if (!text || text.trim() === "") {
-            console.warn("SeaWatch: No data found in TTN Storage.");
-            document.getElementById('payload').innerText = "No Data";
-            return;
-        }
-
-        // Get the very last line (most recent data)
-        const lines = text.trim().split('\n');
-        const lastLine = JSON.parse(lines[lines.length - 1]);
         
-        // Extract the info
-        const result = lastLine.result;
-        const payload = result.uplink_message.decoded_payload;
-        
-        // Match the variable name from your TTN Payload Formatter (value or count)
-        const count = payload.value !== undefined ? payload.value : (payload.count || 0);
-        const device = result.end_device_ids.device_id;
-        const time = new Date(result.received_at).toLocaleTimeString();
+        if (text) {
+    const lines = text.trim().split('\n');
+    const lastLine = JSON.parse(lines[lines.length - 1]);
+    
+    // 1. Get the data from TTN
+    const result = lastLine.result;
+    const payload = result.uplink_message.decoded_payload;
+    const count = payload.value || payload.count || "0";
+    const device = result.end_device_ids.device_id;
+    const time = new Date(result.received_at).toLocaleTimeString();
 
-        // Update the HTML IDs exactly as they appear in your
-        document.getElementById('payload').innerText = count;
-        document.getElementById('device-id').innerText = device;
-        document.getElementById('timestamp').innerText = time;
-        
-        // Update Status Indicator
-        const statusLabel = document.getElementById('status');
-        statusLabel.innerText = "Connected";
-        statusLabel.style.color = "green";
+    // 2. Update the HTML using YOUR specific IDs
+    document.getElementById('payload').innerText = count;      // Matches <b id="payload">
+    document.getElementById('device-id').innerText = device;  // Matches <span id="device-id">
+    document.getElementById('timestamp').innerText = time;    // Matches <span id="timestamp">
+    
+    // 3. Update the status indicator
+    const statusLabel = document.getElementById('status');
+    statusLabel.innerText = "Connected";
+    statusLabel.style.color = "cyan";
 
-        console.log("SeaWatch: Update Successful. Count:", count);
-
+    console.log("Dashboard Updated! Count is:", count);
+}
     } catch (error) {
-        console.error("SeaWatch: Error during update:", error);
-        document.getElementById('status').innerText = "Disconnected";
-        document.getElementById('status').style.color = "red";
+        console.error("Direct Fetch Error:", error);
+        // If you see a 'CORS' error here, see step 2 below.
     }
 }
 
-// --- INITIALIZE ---
-fetchLiveDashboard(); // Run immediately on load
+setInterval(fetchLoRaData, 10000);
+fetchLoRaData();
 
-// Refresh every 10 seconds (10,000ms)
-setInterval(fetchLiveDashboard, 10000);
+setInterval(function() {
+    console.log("10 seconds passed. Refreshing data...");
+    fetchLoRaData();
+}, 10000);
