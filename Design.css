@@ -1,23 +1,68 @@
+/* Base Styles - Clean and Modern */
 body {
-    background-image: url("pictures/logo for box png.png");
-    background-repeat: no-repeat;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-image: url('/pictures/logo for box png.png');
     background-size: cover;
-    color: #0051ff;
-    font-family: 'Courier New', monospace;
+    color: white;
+    margin: 0;
     display: flex;
     justify-content: center;
-    padding-top: 200px;
+    align-items: center;
+    min-height: 100vh;
 }
 
-#data-card {
-    border: 2px solid #007cf0;
-    padding: 20px;
+.dashboard-container {
+    width: 90%;
+    max-width: 800px;
+    background: #1e293b;
+    padding: 30px;
     border-radius: 20px;
-    background: #252525;
-    box-shadow: 0 0 15px rgba(11, 202, 228, 0.479);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    text-align: center;
+    border: 1px solid #334155;
 }
-.status-indicator {
-    margin-top: 20px;
-    font-size: 1.2em;
-    color: #1506e4;
+
+/* The Data Grid - This is where the magic happens */
+.data-grid {
+    display: flex;
+    flex-direction: row; /* Side-by-side on desktop */
+    justify-content: space-around;
+    gap: 20px;
+    margin: 30px 0;
+}
+
+.card {
+    background: #0f172a;
+    padding: 20px;
+    border-radius: 15px;
+    flex: 1;
+}
+
+#payload {
+    font-size: 4rem; /* Huge number for the count */
+    color: #38bdf8; /* Bright Sea Blue */
+    display: block;
+}
+
+.label {
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    color: #94a3b8;
+    letter-spacing: 1px;
+}
+
+/* --- MOBILE RESPONSIVENESS --- */
+@media (max-width: 600px) {
+    .data-grid {
+        flex-direction: column; /* Stacks cards vertically on phone */
+    }
+
+    #payload {
+        font-size: 3rem; /* Slightly smaller text for phones */
+    }
+
+    .dashboard-container {
+        padding: 15px;
+        width: 95%;
+    }
 }
