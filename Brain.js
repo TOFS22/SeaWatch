@@ -1,59 +1,54 @@
-// GitHub Pages Version - No Netlify needed!
-const APP_ID = 'seawatch'; // From TTN Overview
-const API_KEY = 'NNSXS.CXMVOLSRYKVVSZYF6JIYNIBXN6AVCPDJM72RGJA.QZQYP6O7NT7XWKVYAQ6L7HNTYLNC7M53DFPBWWW2WKLKZFU7R25A'; // Your full TTN API Key
-const REGION = 'eu1'; // e.g., eu1, nam1, etc.
+const APP_ID = 'seawatch'; 
+const API_KEY = 'NNSXS.CXMVOLSRYKVVSZYF6JIYNIBXN6AVCPDJM72RGJA.QZQYP6O7NT7XWKVYAQ6L7HNTYLNC7M53DFPBWWW2WKLKZFU7R25A'; 
+const REGION = 'eu1'; 
 
 async function fetchLoRaData() {
-    console.log("Fetching directly from TTN...");
+    console.log("Fetching directly from TTN (No Proxy)...");
     
-    const url = `https://${REGION}.cloud.thethings.network/api/v3/as/applications/${APP_ID}/packages/storage/uplink_message`;
-
+    // The '?nocache=' part forces the browser to bypass old saved data
+    // This tells TTN: "Give me only 1 message, and make it the newest one (descending)"
+const url = `https://${REGION}.cloud.thethings.network/api/v3/as/applications/${APP_ID}/packages/storage/uplink_message?limit=1&order=-received_at&nocache=${Date.now()}`;
     try {
         const response = await fetch(url, {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${API_KEY}`,
-                'Accept': 'text/event-stream'
+                'Accept': 'application/json' // Changed from event-stream to json
             }
         });
 
-        if (!response.ok) throw new Error(`TTN Error: ${response.status}`);
+        if (!response.ok) {
+            if(response.status === 401) throw new Error("API Key is invalid.");
+            throw new Error(`TTN Error: ${response.status}`);
+        }
 
-        const text = await response.text();
-        
-        if (text) {
-    const lines = text.trim().split('\n');
-    const lastLine = JSON.parse(lines[lines.length - 1]);
+        // ... inside your fetchLoRaData try block ...
+const text = await response.text();
+const lines = text.trim().split('\n');
+
+// Grab the very last line of the response
+const lastLine = JSON.parse(lines[lines.length - 1]);
+
+// Look deep inside the result
+if (lastLine.result && lastLine.result.uplink_message) {
+    const payload = lastLine.result.uplink_message.decoded_payload;
     
-    // 1. Get the data from TTN
-    const result = lastLine.result;
-    const payload = result.uplink_message.decoded_payload;
-    const count = payload.value || payload.count || "0";
-    const device = result.end_device_ids.device_id;
-    const time = new Date(result.received_at).toLocaleTimeString();
+    // LOG IT so we can see it in F12
+    console.log("Full Payload from TTN:", payload);
 
-    // 2. Update the HTML using YOUR specific IDs
-    document.getElementById('payload').innerText = count;      // Matches <b id="payload">
-    document.getElementById('device-id').innerText = device;  // Matches <span id="device-id">
-    document.getElementById('timestamp').innerText = time;    // Matches <span id="timestamp">
+    // Grab the value. If it's missing, show '??'
+    const count = (payload && payload.hasOwnProperty('value')) ? payload.value : "??";
     
-    // 3. Update the status indicator
-    const statusLabel = document.getElementById('status');
-    statusLabel.innerText = "Connected";
-    statusLabel.style.color = "Blue";
-
-    console.log("Dashboard Updated! Count is:", count);
-}
+    document.getElementById('payload').innerText = count;
+    document.getElementById('timestamp').innerText = new Date(lastLine.result.received_at).toLocaleTimeString();
+        }
     } catch (error) {
-        console.error("Direct Fetch Error:", error);
-        // If you see a 'CORS' error here, see step 2 below.
+        console.error("Fetch Error:", error);
+        document.getElementById('status').innerText = "Offline/Blocked";
+        document.getElementById('status').style.color = "Red";
     }
 }
 
-setInterval(fetchLoRaData, 10000);
+// Start the loop
 fetchLoRaData();
-
-setInterval(function() {
-    console.log("10 seconds passed. Refreshing data...");
-    fetchLoRaData();
-}, 10000);
+setInterval(fetchLoRaData, 10000);
